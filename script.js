@@ -131,10 +131,12 @@ window.onload=function(){
     }
 
     nama.innerHTML=user.name;
-    saldo.innerHTML=user.saldo;
+
+    refreshSaldo();
+
+    setInterval(refreshSaldo,5000);
 
 }
-
 
 
 // ======================

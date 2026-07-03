@@ -1,5 +1,4 @@
 const API_URL = "https://lucky-easter-powered-profit.trycloudflare.com";
-
 // ======================
 // REGISTER
 // ======================

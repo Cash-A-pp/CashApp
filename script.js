@@ -29,22 +29,29 @@ function register() {
 
         let data=await response.json();
 
-        console.log(data);
-
         if(data.status=="success"){
+
             alert("Register berhasil");
+
             window.location.href="login.html";
+
         }else{
+
             alert(data.message);
+
         }
 
     })
     .catch(error=>{
+
         console.error(error);
+
         alert("Tidak bisa terhubung ke server!");
+
     });
 
 }
+
 
 
 // ======================
@@ -81,8 +88,6 @@ function login(){
 
         let data=await response.json();
 
-        console.log(data);
-
         if(data.status=="success"){
 
             localStorage.setItem("user",JSON.stringify(data));
@@ -110,7 +115,7 @@ function login(){
 
 
 // ======================
-// LOAD DASHBOARD
+// DASHBOARD
 // ======================
 window.onload=function(){
 
@@ -137,6 +142,61 @@ window.onload=function(){
     setInterval(refreshSaldo,5000);
 
 }
+
+
+
+// ======================
+// REFRESH SALDO
+// ======================
+function refreshSaldo(){
+
+    let user=JSON.parse(localStorage.getItem("user"));
+
+    if(!user){
+        return;
+    }
+
+    fetch(API_URL+"/saldo",{
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+
+            email:user.email
+
+        })
+
+    })
+
+    .then(res=>res.json())
+
+    .then(data=>{
+
+        if(data.status=="success"){
+
+            user.saldo=data.saldo;
+
+            localStorage.setItem("user",JSON.stringify(user));
+
+            document.getElementById("saldo").innerHTML=
+            Number(data.saldo).toLocaleString("id-ID");
+
+        }
+
+    })
+
+    .catch(error=>{
+
+        console.log(error);
+
+    });
+
+}
+
 
 
 // ======================

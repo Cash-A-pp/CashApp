@@ -1,4 +1,4 @@
-const API_URL = "https://respect-digit-divine-native.trycloudflare.com";
+const API_URL = "https://flows-wrote-judge-mileage.trycloudflare.com";
 
 // REGISTER
 function register() {

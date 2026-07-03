@@ -1,48 +1,71 @@
+const API_URL = "https://respect-digit-divine-native.trycloudflare.com";
+
+// =====================
+// REGISTER
+// =====================
 function register() {
   let name = document.getElementById("name").value;
   let email = document.getElementById("email").value;
   let password = document.getElementById("password").value;
 
-  let user = {
-    name: name,
-    email: email,
-    password: password,
-    saldo: 0
-  };
-
-  localStorage.setItem(email, JSON.stringify(user));
-
-  alert("Register berhasil!");
-  window.location.href = "login.html";
+  fetch(API_URL + "/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      name,
+      email,
+      password
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === "success") {
+      alert("Register berhasil!");
+      window.location.href = "login.html";
+    } else {
+      alert(data.message);
+    }
+  });
 }
 
+// =====================
+// LOGIN
+// =====================
 function login() {
   let email = document.getElementById("email").value;
   let password = document.getElementById("password").value;
 
-  let user = JSON.parse(localStorage.getItem(email));
-
-  if (user && user.password === password) {
-    localStorage.setItem("login", email);
-    window.location.href = "index.html";
-  } else {
-    alert("Login gagal!");
-  }
+  fetch(API_URL + "/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      email,
+      password
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === "success") {
+      localStorage.setItem("user", JSON.stringify(data));
+      window.location.href = "index.html";
+    } else {
+      alert("Login gagal!");
+    }
+  });
 }
 
-function loadUser() {
-  let email = localStorage.getItem("login");
-  let user = JSON.parse(localStorage.getItem(email));
+// =====================
+// LOAD DASHBOARD
+// =====================
+window.onload = function () {
+  let user = JSON.parse(localStorage.getItem("user"));
 
   if (!user) return;
 
-  document.getElementById("user").innerText = "Halo, " + user.name;
+  document.getElementById("nama").innerText = user.name;
   document.getElementById("saldo").innerText = user.saldo;
 }
-
-function logout() {
-  localStorage.removeItem("login");
-  window.location.href = "login.html";
-}
-
-window.onload = loadUser;

@@ -1,8 +1,6 @@
 const API_URL = "https://respect-digit-divine-native.trycloudflare.com";
 
-// =====================
 // REGISTER
-// =====================
 function register() {
   let name = document.getElementById("name").value;
   let email = document.getElementById("email").value;
@@ -13,11 +11,7 @@ function register() {
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({
-      name,
-      email,
-      password
-    })
+    body: JSON.stringify({ name, email, password })
   })
   .then(res => res.json())
   .then(data => {
@@ -30,9 +24,7 @@ function register() {
   });
 }
 
-// =====================
 // LOGIN
-// =====================
 function login() {
   let email = document.getElementById("email").value;
   let password = document.getElementById("password").value;
@@ -42,10 +34,7 @@ function login() {
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({
-      email,
-      password
-    })
+    body: JSON.stringify({ email, password })
   })
   .then(res => res.json())
   .then(data => {
@@ -58,9 +47,7 @@ function login() {
   });
 }
 
-// =====================
 // LOAD DASHBOARD
-// =====================
 window.onload = function () {
   let user = JSON.parse(localStorage.getItem("user"));
 
@@ -68,4 +55,10 @@ window.onload = function () {
 
   document.getElementById("nama").innerText = user.name;
   document.getElementById("saldo").innerText = user.saldo;
+};
+
+// LOGOUT
+function logout() {
+  localStorage.removeItem("user");
+  window.location.href = "login.html";
 }
